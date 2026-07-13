@@ -149,6 +149,7 @@
             align-items: center;
             gap: 20px;
             flex-wrap: wrap;
+            animation: fadeIn 0.5s ease;
         }
 
         .vacancy-info {
@@ -164,11 +165,10 @@
 
         .vacancy-salary {
             color: var(--success-color);
-            font-weight: bold;
-            font-siz
 
 
-e: 1.2rem;
+font-weight: bold;
+            font-size: 1.2rem;
             margin-bottom: 10px;
         }
 
@@ -275,15 +275,14 @@ e: 1.2rem;
             padding: 40px;
             border-radius: 12px;
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
-            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
-            from { transform: translateY(-20px); opacity: 0; }
+            from { transform: translateY(-10px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -293,16 +292,23 @@ e: 1.2rem;
             font-size: 1.4rem;
         }
 
+        .vk-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
         .vk-button {
-            display: inline-block;
+            display: block;
             background-color: #0077ff;
             color: white;
             text-decoration: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-weight: bold;
             border-radius: 6px;
-            margin-top: 15px;
             transition: background 0.2s;
+            box-sizing: border-box;
         }
 
         .vk-button:hover {
@@ -318,27 +324,22 @@ e: 1.2rem;
             font-size: 1.5rem;
             cursor: pointer;
             color: #94a3b8;
-            width: auto;
-            margin: 0;
-            padding: 0;
         }
-
-        footer {
-            background-color: var(--primary-color);
-            color: #94a3b8;
-            text-align: center;
+        
+        .loading-text {
+            text-ali
 
 
-padding: 20px 0;
-            margin-top: 50px;
-            font-size: 0.9rem;
+gn: center;
+            color: #64748b;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>ОмскПерсонал</h1>
+        <h1>СтройПерсонал</h1>
         <p>Профессиональный подбор кадров для объектов любой сложности</p>
         <nav>
             <a href="#about">О компании</a>
@@ -361,9 +362,9 @@ padding: 20px 0;
                 <h3>Строительным компаниям</h3>
                 <p>Быстро подберем персонал под ваши задачи:</p>
                 <ul>
-                    <li>ИТР: прорабы, главные инженеры, сметчики.</li>
-                    <li>Квалифицированные рабочие: сварщики, монолитчики, каменщики.</li>
-                    <li>Линейный персонал и разнорабочие.</li>
+                    <li>**ИТР**: прорабы, главные инженеры, сметчики.</li>
+                    <li>**Квалифицированные рабочие**: сварщики, монолитчики, каменщики.</li>
+                    <li>**Линейный персонал** и разнорабочие.</li>
                 </ul>
             </div>
 
@@ -383,41 +384,9 @@ padding: 20px 0;
                 <h2>Актуальные вакансии</h2>
             </div>
             
-            <div class="vacancies-list">
-                <div class="vacancy-card">
-                    <div class="vacancy-info">
-                        <h3>Сварщик НАКС (ТТ / СК)</h3>
-                        <div class="vacancy-salary">от 140 000 до 180 000 руб.</div>
-                        <p class="vacancy-desc">Обязанности: Сварка технологических трубопроводов или строительных конструкций.</p>
-                    </div>
-                    <div class="vacancy-action">
-                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
-                    </div>
-                </div>
-
-                <div class="vacancy-card">
-                    <div class="vacancy-info">
-                        <h3>Прораб общестроительных работ</h3>
-                        <div class="vacancy-salary">от 160 000 руб.</div>
-                        <p class="vacancy-desc">Обязанности: Руководство строительными бригадами на объекте, контроль качества, ведение журналов работ и исполнительной документации.</p>
-                    </div>
-                    <div class="vacancy-action">
-                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
-                    </div>
-                </div>
-
-                <div class="vacancy-card">
-                    <div class="vacancy-info">
-                        <h3>Арматурщик-монолитчик</h3>
-                        <div class="vacancy-salary">от 110 000 руб.</div>
-                        <p class="vacancy-desc">Обязанности: Вязка арматурных каркасов, сборка/разборка опалубки, прием и укладка бетонной смеси.</p>
-                    </div>
-                    <div class="vacancy-action">
-                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
-
-
-</div>
-                </div>
+            <!-- Сюда вакансии будут загружаться из Google Таблицы автоматически -->
+            <div class="vacancies-list" id="vacanciesList">
+                <p class="loading-text">Загрузка актуальных вакансий...</p>
             </div>
         </section>
 
@@ -427,6 +396,11 @@ padding: 20px 0;
             </div>
             
             <form id="applicationForm">
+                <!-- Скрытая ловушка для ботов -->
+                <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+                    <input type="text" name="address_line2" autocomplete="off" tabindex="-1">
+                </div>
+
                 <div class="form-group">
                     <label for="fullname">Имя и Фамилия</label>
                     <input type="text" id="fullname" name="ФИО" placeholder="Иван Иванов" required>
@@ -447,61 +421,111 @@ padding: 20px 0;
                     <input type="email" id="email" name="Email" placeholder="example@mail.ru" required>
                 </div>
 
+                <!-- НОВОЕ ПОЛЕ: Календарь даты выхода -->
+                <div class="form-group">
+                    <label for="startdate">Когда вы готовы выйти на работу?</label>
+                    <input type="date" id="startdate" name="Дата выхода" required>
+                </div>
+
                 <button type="submit" class="btn-submit" id="submitBtn">Отправить заявку</button>
-            </form>
+
+
+</form>
         </section>
 
     </div>
 
+    <!-- Модальное окно с двумя кнопками ВК -->
     <div class="modal-overlay" id="vkModal">
         <div class="modal-content">
             <button class="close-modal" id="closeModalBtn">&times;</button>
             <h3>Заявка успешно отправлена!</h3>
             <p>Переходите в наш чат во Вконтакте, чтобы ускорить процесс рассмотрения:</p>
-            <!-- ЗАМЕНИ ССЫЛКУ АЛООО -->
-            <a href="https://vk.com/your_chat_link" target="_blank" class="vk-button">Перейти в чат ВК</a>
+            
+            <div class="vk-buttons-container">
+                <!-- ПЕРВАЯ КНОПКА ВК -->
+                <a href="https://vk.com/your_chat_link_1" target="_blank" class="vk-button">Перейти в чат ВК</a>
+                <!-- ВТОРАЯ КНОПКА ВК -->
+                <a href="https://vk.com/your_chat_link_2" target="_blank" class="vk-button">Перейти в чат ВК</a>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 ОмскПерсонал. Все права защищены.</p>
+        <p>&copy; 2026 СтройПерсонал. Все права защищены.</p>
     </footer>
 
     <script>
-        // ВСТАВЬ СЮДА ССЫЛКУ, ИЗ GOOGLE APPS SCRIPT
+        // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
         const googleScriptURL = 'https://script.google.com/macros/s/AKfycby6tsLLZMrl9wc2AzX8eki3I0TAcOXBVWCYEDgbP3oGovNPaYBRP39oSYR_B_BfFBbEeA/exec';
 
         const form = document.getElementById('applicationForm');
         const modal = document.getElementById('vkModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const submitBtn = document.getElementById('submitBtn');
+        const vacanciesList = document.getElementById('vacanciesList');
 
+        // === АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ВАКАНСИЙ ИЗ ТАБЛИЦЫ ===
+        function loadVacancies() {
+            fetch(googleScriptURL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0 && !data.error) {
+                        vacanciesList.innerHTML = ''; // Очищаем текст загрузки
+                        data.forEach(vacancy => {
+                            const card = document.createElement('div');
+                            card.className = 'vacancy-card';
+                            card.innerHTML = `
+                                <div class="vacancy-info">
+                                    <h3>${vacancy.title}</h3>
+                                    <div class="vacancy-salary">${vacancy.salary}</div>
+                                    <p class="vacancy-desc">${vacancy.desc}</p>
+                                </div>
+                                <div class="vacancy-action">
+                                    <a href="#apply" class="btn-apply-small">Откликнуться</a>
+                                </div>
+                            `;
+                            vacanciesList.appendChild(card);
+                        });
+                    } else {
+                        vacanciesList.innerHTML = '<p class="loading-text">На данный момент открытых вакансий нет. Напишите нам через форму ниже!</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка загрузки вакансий:', error);
+                    vacanciesList.innerHTML = '<p class="loading-text" style="color: red;">Не удалось загрузить список вакансий. Попробуйте обновить страницу.</p>';
+                });
+        }
+
+        // Запускаем загрузку вакансий сразу при открытии сайта
+        window.addEventListener('DOMContentLoaded', loadVacancies);
+
+        // === ОТПРАВКА ФОРМЫ ЗАЯВКИ ===
         form.addEventListener('submit', function(e) {
             e.preventDefault(); 
             
             submitBtn.disabled = true;
             submitBtn.innerText = 'Отправка...';
 
-            // Преобразуем данные формы в формат параметров для Google
             const formData = new FormData(form);
             const searchParams = new URLSearchParams(formData);
 
             fetch(googleScriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // Позволяет отправлять данные без проблем с CORS блокировками
+                mode: 'no-cors', 
                 body: searchParams,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .then(() => {
-                // В режиме 'no-cors' мы не можем прочитать ответ сервера, 
-                // но если запрос ушел без сетевой ошибки — он выполнился успешно.
                 modal.style.display = 'flex';
                 form.reset(); 
             })
-            .catch(error => {
-                alert('Ошибка сети. Пожалуйста, попробуйте еще раз.');
+
+
+.catch(error => {
+                alert('Ошибка сети при отправке. Пожалуйста, попробуйте еще раз.');
                 console.error('Error:', error);
             })
             .finally(() => {
@@ -510,15 +534,8 @@ padding: 20px 0;
             });
         });
 
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        closeModalBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
     </script>
 </body>
 </html>
