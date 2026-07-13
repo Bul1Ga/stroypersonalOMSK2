@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СтройПерсонал — Подбор кадров в строительстве</title>
+    <style>
+        :root {
+            --primary-color: #1e293b; 
+            --accent-color: #f97316;  
+            --text-color: #334155;
+            --bg-light: #f8fafc;
+            --success-color: #16a34a;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 5px 0 15px 0;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            position: relative;
+            display: block;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
+
+        .section-title h2 {
+            margin-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 45%;
+            width: 10%;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .about-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .services-grid {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .service-card {
+            flex: 1;
+            min-width: 280px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .service-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .service-card ul {
+            padding-left: 20px;
+        }
+
+        .vacancies-section {
+            margin-bottom: 60px;
+        }
+
+        .vacancies-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .vacancy-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .vacancy-info {
+            flex: 3;
+            min-width: 280px;
+        }
+
+        .vacancy-info h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .vacancy-salary {
+            color: var(--success-color);
+            font-weight: bold;
+            font-siz
+
+
+e: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .vacancy-desc {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .vacancy-action {
+            flex: 1;
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .btn-apply-small {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .btn-apply-small:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .contact-section {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn-submit {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #ea580c;
+        }
+
+        .btn-submit:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .vk-button {
+            display: inline-block;
+            background-color: #0077ff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .vk-button:hover {
+            background-color: #0066dd;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            width: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: #94a3b8;
+            text-align: center;
+
+
+padding: 20px 0;
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ОмскПерсонал</h1>
+        <p>Профессиональный подбор кадров для объектов любой сложности</p>
+        <nav>
+            <a href="#about">О компании</a>
+            <a href="#vacancies">Вакансии</a>
+            <a href="#apply">Подать заявку</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <section id="about" class="about-section">
+            <div class="section-title">
+                <h2>О компании</h2>
+            </div>
+            <p>Мы специализируемся на поиске и отборе квалифицированного персонала для строительной отрасли. Помогаем компаниям быстро закрывать вакансии, а специалистам — находить надежных работодателей.</p>
+        </section>
+
+        <section class="services-grid">
+            <div class="service-card">
+                <h3>Строительным компаниям</h3>
+                <p>Быстро подберем персонал под ваши задачи:</p>
+                <ul>
+                    <li>ИТР: прорабы, главные инженеры, сметчики.</li>
+                    <li>Квалифицированные рабочие: сварщики, монолитчики, каменщики.</li>
+                    <li>Линейный персонал и разнорабочие.</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <h3>Соискателям</h3>
+                <p>Предлагаем проверенные вакансии с честными условиями:</p>
+                <ul>
+                    <li>Работа вахтовым методом или на постоянной основе.</li>
+                    <li>Официальное трудоустройство и белая зарплата.</li>
+                    <li>Объекты по всей России от крупных застройщиков.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="vacancies" class="vacancies-section">
+            <div class="section-title">
+                <h2>Актуальные вакансии</h2>
+            </div>
+            
+            <div class="vacancies-list">
+                <div class="vacancy-card">
+                    <div class="vacancy-info">
+                        <h3>Сварщик НАКС (ТТ / СК)</h3>
+                        <div class="vacancy-salary">от 140 000 до 180 000 руб.</div>
+                        <p class="vacancy-desc">Обязанности: Сварка технологических трубопроводов или строительных конструкций.</p>
+                    </div>
+                    <div class="vacancy-action">
+                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
+                    </div>
+                </div>
+
+                <div class="vacancy-card">
+                    <div class="vacancy-info">
+                        <h3>Прораб общестроительных работ</h3>
+                        <div class="vacancy-salary">от 160 000 руб.</div>
+                        <p class="vacancy-desc">Обязанности: Руководство строительными бригадами на объекте, контроль качества, ведение журналов работ и исполнительной документации.</p>
+                    </div>
+                    <div class="vacancy-action">
+                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
+                    </div>
+                </div>
+
+                <div class="vacancy-card">
+                    <div class="vacancy-info">
+                        <h3>Арматурщик-монолитчик</h3>
+                        <div class="vacancy-salary">от 110 000 руб.</div>
+                        <p class="vacancy-desc">Обязанности: Вязка арматурных каркасов, сборка/разборка опалубки, прием и укладка бетонной смеси.</p>
+                    </div>
+                    <div class="vacancy-action">
+                        <a href="#apply" class="btn-apply-small">Откликнуться</a>
+
+
+</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply" class="contact-section">
+            <div class="section-title">
+                <h2>Подать Заявку</h2>
+            </div>
+            
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label for="fullname">Имя и Фамилия</label>
+                    <input type="text" id="fullname" name="ФИО" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Дата рождения</label>
+                    <input type="date" id="birthdate" name="Дата рождения" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Контактный номер телефона</label>
+                    <input type="tel" id="phone" name="Телефон" placeholder="+7 (999) 000-00-00" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Электронная почта (Email)</label>
+                    <input type="email" id="email" name="Email" placeholder="example@mail.ru" required>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Отправить заявку</button>
+            </form>
+        </section>
+
+    </div>
+
+    <div class="modal-overlay" id="vkModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h3>Заявка успешно отправлена!</h3>
+            <p>Переходите в наш чат во Вконтакте, чтобы ускорить процесс рассмотрения:</p>
+            <!-- ЗАМЕНИ ССЫЛКУ АЛООО -->
+            <a href="https://vk.com/your_chat_link" target="_blank" class="vk-button">Перейти в чат ВК</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ОмскПерсонал. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // ВСТАВЬ СЮДА ССЫЛКУ, ИЗ GOOGLE APPS SCRIPT
+        const googleScriptURL = 'https://script.google.com/macros/s/AKfycby6tsLLZMrl9wc2AzX8eki3I0TAcOXBVWCYEDgbP3oGovNPaYBRP39oSYR_B_BfFBbEeA/exec';
+
+        const form = document.getElementById('applicationForm');
+        const modal = document.getElementById('vkModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Отправка...';
+
+            // Преобразуем данные формы в формат параметров для Google
+            const formData = new FormData(form);
+            const searchParams = new URLSearchParams(formData);
+
+            fetch(googleScriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Позволяет отправлять данные без проблем с CORS блокировками
+                body: searchParams,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(() => {
+                // В режиме 'no-cors' мы не можем прочитать ответ сервера, 
+                // но если запрос ушел без сетевой ошибки — он выполнился успешно.
+                modal.style.display = 'flex';
+                form.reset(); 
+            })
+            .catch(error => {
+                alert('Ошибка сети. Пожалуйста, попробуйте еще раз.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Отправить заявку';
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
