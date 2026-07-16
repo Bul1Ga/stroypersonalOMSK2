@@ -219,7 +219,6 @@ font-weight: bold;
             font-weight: bold;
         }
 
-        /* Обновленные стили для красивого отображения поля селекта */
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
@@ -322,13 +321,12 @@ font-weight: bold;
             top: 15px;
             right: 15px;
             background: none;
-            border: none
-
-
-;
+            border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #94a3b8;
+
+
+color: #94a3b8;
         }
         
         .loading-text {
@@ -433,13 +431,13 @@ font-weight: bold;
 
                 <div class="form-group">
                     <label for="email">Электронная почта (Email)</label>
-                    <input type="email" id="email" name="Email" placeholder="example@mail.ru" require
-
-
-d>
+                    <input type="email" id="email" name="Email" placeholder="example@mail.ru" required>
                 </div>
 
-                <!-- Календарь даты выхода -->
+                <!-- Календарь даты выхода -
+
+
+->
                 <div class="form-group">
                     <label for="startdate">Когда вы готовы выйти на работу?</label>
                     <input type="date" id="startdate" name="Дата выхода" required>
@@ -523,12 +521,10 @@ d>
 
         // === ОТПРАВКА ФОРМЫ ЗАЯВКИ ===
         form.addEventListener('submit', function(e) {
-            e.pr
+            e.preventDefault(); // Исправлено с eventDefault на e.preventDefault()
 
 
-eventDefault(); 
-            
-            submitBtn.disabled = true;
+submitBtn.disabled = true;
             submitBtn.innerText = 'Отправка...';
 
             const formData = new FormData(form);
