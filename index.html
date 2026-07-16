@@ -243,6 +243,12 @@ font-weight: bold;
             cursor: not-allowed;
         }
 
+        .spots-status-box {
+            margin-top: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
         .btn-submit {
             background-color: var(--accent-color);
             color: white;
@@ -317,17 +323,16 @@ font-weight: bold;
             font-weight: bold;
             border-radius: 6px;
             transition: background 0.2s;
-            box-sizing: border-box;
+
+
+box-sizing: border-box;
         }
 
         .vk-button:hover {
             background-color: #0066dd;
         }
 
-        .close-mod
-
-
-al {
+        .close-modal {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -423,7 +428,7 @@ al {
                     <input type="text" name="address_line2" autocomplete="off" tabindex="-1">
                 </div>
 
-                <!-- Поле выбранной вакансии (заполняется автоматически) -->
+                <!-- Выбранная вакансия -->
                 <div class="form-group">
                     <label for="vacancy">Выбранная вакансия</label>
                     <input type="text" id="vacancy" name="Вакансия" placeholder="Нажмите «Откликнуться» на вакансии выше 👆" readonly required>
@@ -435,11 +440,11 @@ al {
                 </div>
 
                 <div class="form-group">
-                    <label for="birthdate">Дата рождения</label>
-                    <input type="date" id="birthdate" name="Дата рождения" r
+                    <label for="birthdate">
 
 
-equired>
+Дата рождения</label>
+                    <input type="date" id="birthdate" name="Дата рождения" required>
                 </div>
 
                 <div class="form-group">
@@ -452,12 +457,14 @@ equired>
                     <input type="email" id="email" name="Email" placeholder="example@mail.ru" required>
                 </div>
 
+                <!-- Календарь даты выхода -->
                 <div class="form-group">
                     <label for="startdate">Когда вы готовы выйти на работу?</label>
                     <input type="date" id="startdate" name="Дата выхода" required>
+                    <!-- Сюда динамически выводится статус мест -->
+                    <div id="spotsStatus" class="spots-status-box"></div>
                 </div>
 
-                <!-- Поле выбора смены (необходимо для doPost твоего скрипта) -->
                 <div class="form-group">
                     <label for="shift">Желаемая смена</label>
                     <select id="shift" name="Смена" required>
@@ -498,18 +505,84 @@ equired>
         const submitBtn = document.getElementById('submitBtn');
         const vacanciesList = document.getElementById('vacanciesList');
         const vacancyInput = document.getElementById('vacancy');
+        const dateInput = document.getElementById('startdate');
+        const spotsStatus = document.getElementById('spotsStatus');
+
+        // Хранилища для проверки лимитов
+        window.allVacancies = [];
+        window.allBookings = {};
 
         // Ограничение даты (нельзя выбрать прошедшие дни)
         const todayStr = new Date().toISOString().split('T')[0];
-        document.getElementById('startdate').setAttribute('min', todayStr);
+        dateInput.setAttribute('min', todayStr);
 
-        // Функция автоматического выбора вакансии при клике на кнопку
+        // Функция форматирования даты из YYYY-MM-DD в DD.MM.YYYY для сообщений
+        function formatDateRu(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            return parts[2] + '.' + parts[1] + '.' + parts[0];
+        }
+
+        // === ФУНКЦИЯ ПРОВЕРКИ МЕСТ ===
+        function checkSpots() {
+            const vacancyName = vacancyInput.value;
+            const selectedDate = dateInput.value;
+            
+            if (!vacancyName) {
+                spotsStatus.innerHTML = '<span style="color: #64748b;">Выберите вакансию выше 👆</span>';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            if (!selectedDate) {
+                s
+
+
+potsStatus.innerHTML = '<span style="color: #64748b;">Выберите желаемую дату выхода 📅</span>';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            // Находим вакансию в списке полученных данных
+            const vacancyObj = window.allVacancies.find(function(v) { return v.title === vacancyName; });
+            if (!vacancyObj) return;
+
+            const totalSpots = vacancyObj.total_spots;
+
+            // Если лимит не указан или равен 0/null — места неограничены
+            if (!totalSpots || isNaN(totalSpots) || totalSpots <= 0) {
+                spotsStatus.innerHTML = '<span style="color: var(--success-color);">🟢 Места на эту дату свободны (без лимита)</span>';
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Отправить заявку';
+                return;
+            }
+
+            // Вычисляем количество занятых мест на выбранную дату
+            const booked = (window.allBookings[vacancyName] && window.allBookings[vacancyName][selectedDate]) || 0;
+            const left = totalSpots - booked;
+
+            if (left > 0) {
+                spotsStatus.innerHTML = '<span style="color: var(--success-color);">🟢 Свободно мест на ' + formatDateRu(selectedDate) + ': ' + left + ' из ' + totalSpots + '</span>';
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Отправить заявку';
+            } else {
+                spotsStatus.innerHTML = '<span style="color: #ef4444;">🔴 На ' + formatDateRu(selectedDate) + ' мест нет! Выберите другую дату.</span>';
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Мест на эту дату нет';
+            }
+        }
+
+        // Слушатели на выбор даты и автозаполнение
+        dateInput.addEventListener('change', checkSpots);
+
         window.selectVacancy = function(title) {
             vacancyInput.value = title;
             const applySection = document.getElementById('apply');
             if (applySection) {
                 applySection.scrollIntoView({ behavior: 'smooth' });
             }
+            checkSpots(); // Сразу пересчитываем лимит
         };
 
         // === АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ВАКАНСИЙ ИЗ ТАБЛИЦЫ ===
@@ -517,35 +590,42 @@ equired>
             fetch(googleScriptURL)
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
-                    // Исправление: Извлекаем массив "vacancies" из объекта данных!
-                    const vacancies = data.vacancies || [];
+                    window.allVacancies = data.vacancies || [];
+                    window.allBookings = data.bookings || {};
                     
-                    if (vacancies && vacancies.length > 0) {
+                    if (window.allVacancies.length > 0) {
                         vacanciesList.innerHTML = ''; 
-                        vacancies.forEach(function(vacancy) {
+                        window.allVacancies.forEach(function(vacancy) {
                             const card = document.createElement('div');
                             card.className = 'vacancy-card';
                             
-                            // Экранируем кавычки в названии вакансии для передачи в onclick
-
-
-const escapedTitle = vacancy.title.replace(/'/g, "\\'");
+                            const escapedTitle = vacancy.title.replace(/'/g, "\\'");
+                            
+                            // Красивый вывод лимита на карточке
+                            const limitText = (!vacancy.total_spots || isNaN(vacancy.total_spots) || vacancy.total_spots <= 0)
+                                ? 'Без ограничений по местам' 
+                                : 'Лимит: ' + vacancy.total_spots + ' мест в день';
                             
                             card.innerHTML = 
                                 '<div class="vacancy-info">' +
                                     '<h3>' + vacancy.title + '</h3>' +
                                     '<div class="vacancy-salary">' + vacancy.salary + '</div>' +
                                     '<p class="vacancy-desc">' + vacancy.desc + '</p>' +
+                                    '<div style="font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: #64748b;">' + limitText + '</div>' +
                                 '</div>' +
                                 '<div class="vacancy-action">' +
-                                    '<button type="button" onclick="selectVacancy(\'' + escapedTitle + '\')" class="btn-apply-small">Откликнуться</button>' +
-                                '</div>';
+
+
+'<button type="button" onclick="selectVacancy(\'' + escapedTitle + '\')" class="btn-apply-small">Откликнуться</button>' +
+                                </div>';
                             
                             vacanciesList.appendChild(card);
                         });
                     } else {
                         vacanciesList.innerHTML = '<p class="loading-text">На данный момент открытых вакансий нет. Напишите нам через форму ниже!</p>';
                     }
+
+                    checkSpots(); // Перепроверка формы, если пользователь уже что-то вводил
                 })
                 .catch(function(error) {
                     console.error('Ошибка загрузки вакансий:', error);
@@ -576,6 +656,8 @@ const escapedTitle = vacancy.title.replace(/'/g, "\\'");
             .then(function() {
                 modal.style.display = 'flex';
                 form.reset(); 
+                spotsStatus.innerHTML = '';
+                loadVacancies(); // Сразу обновляем карту занятых мест с сервера
             })
             .catch(function(error) {
                 alert('Ошибка сети при отправке. Пожалуйста, попробуйте еще раз.');
