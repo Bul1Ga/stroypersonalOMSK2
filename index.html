@@ -178,13 +178,6 @@ font-weight: bold;
             color: #475569;
         }
 
-        .vacancy-spots {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #64748b;
-        }
-
         .vacancy-action {
             flex: 1;
             min-width: 150px;
@@ -202,9 +195,6 @@ font-weight: bold;
             border-radius: 4px;
             text-align: center;
             transition: all 0.2s;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.95rem;
         }
 
         .btn-apply-small:hover {
@@ -229,7 +219,7 @@ font-weight: bold;
             font-weight: bold;
         }
 
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 12px;
             border: 1px solid #cbd5e1;
@@ -237,25 +227,11 @@ font-weight: bold;
             box-sizing: border-box;
             font-family: inherit;
             font-size: 1rem;
-            background-color: white;
         }
 
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus {
             outline: none;
             border-color: var(--accent-color);
-        }
-
-        .form-group input[readonly] {
-            background-color: #f1f5f9;
-            color: #64748b;
-            cursor: not-allowed;
-        }
-
-        /* Стиль для плашки проверки свободных мест под календарем */
-        .spots-status-box {
-            margin-top: 8px;
-            font-size: 0.95rem;
-            font-weight: bold;
         }
 
         .btn-submit {
@@ -324,10 +300,7 @@ font-weight: bold;
         }
 
         .vk-button {
-            dis
-
-
-play: block;
+            display: block;
             background-color: #0077ff;
             color: white;
             text-decoration: none;
@@ -354,11 +327,15 @@ play: block;
         }
         
         .loading-text {
-            text-align: center;
+            text-ali
+
+
+gn: center;
             color: #64748b;
             font-style: italic;
         }
 
+        /* КРАСИВЫЙ ТЕМНО-СИНИЙ ФУТЕР (ПЛАШКА СНИЗУ) */
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -422,6 +399,7 @@ play: block;
                 <h2>Актуальные вакансии</h2>
             </div>
             
+            <!-- Сюда вакансии будут загружаться из Google Таблицы автоматически -->
             <div class="vacancies-list" id="vacanciesList">
                 <p class="loading-text">Загрузка актуальных вакансий...</p>
             </div>
@@ -438,16 +416,8 @@ play: block;
                     <input type="text" name="address_line2" autocomplete="off" tabindex="-1">
                 </div>
 
-                <!-- Название вакансии (Автозаполнение) -->
                 <div class="form-group">
-                    <label for="vacancy">Выбранная вакансия</label>
-                    <input type="text" id="vacancy" name="Вакансия" placeholder="Нажмите «Откликнуться» на вакансии выше" readonly required>
-                </div>
-
-                <div class="form-group">
-
-
-<label for="fullname">Имя и Фамилия</label>
+                    <label for="fullname">Имя и Фамилия</label>
                     <input type="text" id="fullname" name="ФИО" placeholder="Иван Иванов" required>
                 </div>
 
@@ -466,31 +436,21 @@ play: block;
                     <input type="email" id="email" name="Email" placeholder="example@mail.ru" required>
                 </div>
 
-                <!-- Календарь даты выхода -->
+                <!-- НОВОЕ ПОЛЕ: Календарь даты выхода -->
                 <div class="form-group">
                     <label for="startdate">Когда вы готовы выйти на работу?</label>
                     <input type="date" id="startdate" name="Дата выхода" required>
-                    <!-- Сюда будет выводиться статус свободных мест именно на выбранный день -->
-                    <div id="spotsStatus" class="spots-status-box"></div>
-                </div>
-
-                <!-- Выбор смены -->
-                <div class="form-group">
-                    <label for="shift">Желаемая смена</label>
-                    <select id="shift" name="Смена" required>
-                        <option value="" disabled selected>Выберите смену...</option>
-                        <option value="День">День</option>
-                        <option value="Ночь">Ночь</option>
-                    </select>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Отправить заявку</button>
-            </form>
+
+
+</form>
         </section>
 
     </div>
 
-    <!-- Модальное окно с кнопкой ВК -->
+    <!-- Модальное окно с двумя кнопками ВК -->
     <div class="modal-overlay" id="vkModal">
         <div class="modal-content">
             <button class="close-modal" id="closeModalBtn">&times;</button>
@@ -498,6 +458,7 @@ play: block;
             <p>Переходите в чат во Вконтакте того объекта, на котором будете работать:</p>
             
             <div class="vk-buttons-container">
+                <!-- ПЕРВАЯ КНОПКА ВК -->
                 <a href="https://vk.me/join/G9soksvcEmgtULxJY_XutX/uivZ0k/m0y6Y=" target="_blank" class="vk-button">ВК объект 1</a>
             </div>
         </div>
@@ -508,7 +469,7 @@ play: block;
     </footer>
 
     <script>
-        // === ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ ШАГА 2 ===
+        // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
         const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwIC-8wIlC5nfrRoeMx6BQNpWUY9ascBcCE_Sw7EjMYG2z2JDPTMX6eeDWT01sUDzpkjw/exec';
 
         const form = document.getElementById('applicationForm');
@@ -516,119 +477,25 @@ play: block;
         const closeModalBtn = document.getElementById('closeModalBtn');
         const submitBtn = document.getElementById('submitBtn');
         const vacanciesList = document.getElementById('vacanciesList');
-        const dateInput = document.getElementById('startdate');
-        const vacancyInput = document.getElementById('vacancy');
-        const spotsStatus = document.getElementById('spotsStatus');
-
-        // Локальное хранилище данных с сервера
-        window.allVacancies = [];
-        window.allBookings = {};
-
-        // Блокируем выбор прошедших дат в календаре
-        const todayStr = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', todayStr);
-
-        // Функция форматирования дат YYYY-MM-DD в красивый русский вид DD.MM.YYYY
-        function formatDateRu(dateStr) {
-            if (!dateStr) return '';
-            const parts = dateStr.split('-');
-            if (parts.length !== 3) return dateStr;
-            return `${parts[2]}.${parts[1]}.${parts[0]}`;
-        }
-
-        // === МГНОВЕННАЯ ПРОВЕРКА СВОБОДНЫХ МЕСТ НА ВЫБРАННУЮ ДАТУ ===
-        function checkSpots() {
-
-
-const vacancyName = vacancyInput.value;
-            const selectedDate = dateInput.value;
-            
-            if (!vacancyName) {
-                spotsStatus.innerHTML = '<span style="color: #64748b;">Выберите вакансию выше 👆</span>';
-                submitBtn.disabled = true;
-                return;
-            }
-
-            if (!selectedDate) {
-                spotsStatus.innerHTML = '<span style="color: #64748b;">Выберите дату выхода в календаре 📅</span>';
-                submitBtn.disabled = true;
-                return;
-            }
-
-            // Ищем вакансию в списке полученных
-            const vacancyObj = window.allVacancies.find(v => v.title === vacancyName);
-            if (!vacancyObj) return;
-
-            const totalSpots = vacancyObj.total_spots;
-
-            // Если лимит мест не указан в таблице или равен 0
-            if (isNaN(totalSpots) || totalSpots <= 0) {
-                spotsStatus.innerHTML = '<span style="color: var(--success-color);">🟢 Места на эту дату свободны</span>';
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Отправить заявку';
-                return;
-            }
-
-            // Вычисляем забронированные места именно на эту дату
-            const booked = (window.allBookings[vacancyName] && window.allBookings[vacancyName][selectedDate]) || 0;
-            const left = Math.max(0, totalSpots - booked);
-
-            if (left > 0) {
-                spotsStatus.innerHTML = `<span style="color: var(--success-color);">🟢 На эту дату осталось мест: ${left} из ${totalSpots}</span>`;
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Отправить заявку';
-            } else {
-                spotsStatus.innerHTML = `<span style="color: #ef4444;">🔴 Извините, на ${formatDateRu(selectedDate)} свободных мест нет. Пожалуйста, выберите другой день!</span>`;
-                submitBtn.disabled = true;
-                submitBtn.innerText = 'Мест на эту дату нет';
-            }
-        }
-
-        // Слушатели событий изменения полей для автопроверки
-        dateInput.addEventListener('change', checkSpots);
-
-        // Функция автоматического заполнения вакансии при клике на "Откликнуться"
-        function selectVacancy(title) {
-            vacancyInput.value = title;
-            const applySection = document.getElementById('apply');
-            if (applySection) {
-                applySection.scrollIntoView({ behavior: 'smooth' });
-            }
-            checkSpots(); // Сразу пересчитываем места, если дата уже была выбрана
-        }
 
         // === АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ВАКАНСИЙ ИЗ ТАБЛИЦЫ ===
         function loadVacancies() {
             fetch(googleScriptURL)
                 .then(response => response.json())
                 .then(data => {
-                    // Сохраняем данные глобально
-                    window.allVacancies = data.vacancies || [];
-                    window.allBookings = data.bookings || {};
-
-                    if (window.allVacancies.length > 0) {
-                        vacanciesList.innerHTML = ''; 
-                        window.allVacancies.forEach(vacancy => {
+                    if (data && data.length > 0 && !data.error) {
+                        vacanciesList.innerHTML = ''; // Очищаем текст загрузки
+                        data.forEach(vacancy => {
                             const card = document.createElement('div');
                             card.className = 'vacancy-card';
-                            
-                            const escapedTitle = vacancy.title.replace(/'/g, "\\'");
-                            const limitText = isNaN(vacancy.total_spots) || vacancy.total_spots <= 0
-                                ? 'Без ограничений по местам' 
-                                : `Лимит: ${vacancy.total_spots} мест/сутки`;
-                            
                             card.innerHTML = `
                                 <div class="vacancy-info">
                                     <h3>${vacancy.title}</h3>
                                     <div class="vacancy-salary">${vacancy.salary}</div>
-                                    <p class="vacancy-desc">${vacancy.de
-
-
-sc}</p>
-                                    <div class="vacancy-spots">${limitText}</div>
+                                    <p class="vacancy-desc">${vacancy.desc}</p>
                                 </div>
                                 <div class="vacancy-action">
-                                    <button type="button" onclick="selectVacancy('${escapedTitle}')" class="btn-apply-small">Откликнуться</button>
+                                    <a href="#apply" class="btn-apply-small">Откликнуться</a>
                                 </div>
                             `;
                             vacanciesList.appendChild(card);
@@ -636,9 +503,6 @@ sc}</p>
                     } else {
                         vacanciesList.innerHTML = '<p class="loading-text">На данный момент открытых вакансий нет. Напишите нам через форму ниже!</p>';
                     }
-                    
-                    // Перепроверяем форму, если в ней что-то заполнено
-                    checkSpots();
                 })
                 .catch(error => {
                     console.error('Ошибка загрузки вакансий:', error);
@@ -646,6 +510,7 @@ sc}</p>
                 });
         }
 
+        // Запускаем загрузку вакансий сразу при открытии сайта
         window.addEventListener('DOMContentLoaded', loadVacancies);
 
         // === ОТПРАВКА ФОРМЫ ЗАЯВКИ ===
@@ -669,10 +534,10 @@ sc}</p>
             .then(() => {
                 modal.style.display = 'flex';
                 form.reset(); 
-                spotsStatus.innerHTML = ''; // Очищаем плашку проверки дат
-                loadVacancies(); // Обновляем базу заявок и вакансий с сервера
             })
-            .catch(error => {
+
+
+.catch(error => {
                 alert('Ошибка сети при отправке. Пожалуйста, попробуйте еще раз.');
                 console.error('Error:', error);
             })
